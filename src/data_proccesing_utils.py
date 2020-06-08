@@ -8,7 +8,7 @@ import datetime
 def load_data(FILEPATH):
     ds = gdal.Open(FILEPATH)
     return ds
-    
+
 # Opens the data HDF file and returns as a dataframe
 def read_dataset(SUBDATASET_NAME, FILEPATH):
     dataset = load_data(FILEPATH)
@@ -18,7 +18,8 @@ def read_dataset(SUBDATASET_NAME, FILEPATH):
             path = sub
             break
     if(path == ''):
-        print(SUBDATASET_NAME + ' not found')
+        # print(SUBDATASET_NAME + ' not found')
+        pass
         return
     subdataset = gdal.Open(path)
     subdataset = subdataset.ReadAsArray()
@@ -45,7 +46,8 @@ def find_latitude_position(CITY_LATITUDE, FILEPATH):
                 column_number = j
                 found_lat = lat
     if(row_number == -1 or column_number == -1):
-        print("Latitude not found. You might have chosen wrong scene")
+        # print("Latitude not found. You might have chosen wrong scene")
+        pass
     return latitude_dataframe, row_number, column_number
 
 # Loads the HDF file, gets the Longitude subdataset and returns the information of the nearest pixel to specified position
@@ -66,7 +68,8 @@ def find_longitude_position(CITY_LONGITUDE, LATITUDE_ROW_NUMBER, FILEPATH):
             column_number = j
             found_lon = lon
     if(column_number == -1):
-        print("Longitude not found. You might have chosen wrong scene")
+        # print("Longitude not found. You might have chosen wrong scene")
+        pass
     return longitude_dataframe, column_number
 
 
@@ -78,7 +81,7 @@ def create_list(subdataset, CITY_LATITUDE, CITY_LONGITUDE, FILEPATH):
     longitude_dataframe, lon_column = find_longitude_position(CITY_LONGITUDE, lat_row, FILEPATH)
     city_row_number = lat_row
     city_column_number = lon_column
-    # 
+    #
     row_begin = city_row_number - 1
     row_end = city_row_number + 1
     column_begin = city_column_number - 1
@@ -110,7 +113,7 @@ def plot(x_axis, y_axis_1, y_axis_2, label1, label2, directory, month):
     path = (directory + month + '/') + month + label1 + label2 + '.png'
     fig = ax.get_figure()
     fig.savefig(path)
-    
+
 
 def create_averaged_data(observed_parameter):
     observed_parameter = np.array(observed_parameter)
